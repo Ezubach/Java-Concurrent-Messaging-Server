@@ -1,0 +1,28 @@
+El cliente inicia sesión con nombre de usuario, nombre de los ficheros que puede compartir y el directorio donde se encuentran.
+	1. Al conectarse al socket envía un mensaje de conexion al Servidor, y se queda esperando al mensaje de confirmación de conexión.
+	2. OyenteServidor recibe el Mensaje de Confirmación de Conexión y para la espera del Cliente.
+	3. El Cliente tiene 3 opciones:
+		- Pedir lista de usuarios conectados y sus ficheros compartidos.
+		- Pedir descargar un archivo concreto.
+		- Desconectarse del Servidor
+
+1. Pedir lista:
+	Cliente envía un Mensaje de Consultar Información, luego OyenteCliente del Servidor lo recibe, recupera la lista y le envía un Mensaje de Confirmación de Consulta que lleva la lista.
+
+2. Descargar Archivo:
+	Cliente 1 envía un Mensaje de Solicitar Archivo (info del archivo y quién lo tiene) al Servidor. OyenteCliente busca los flujos del Cliente 2 en concreto y le manda un Mensaje de Preparar Envío. Cliente 2 se prepara para que se conecte alguien a su Socket de P2P y le envía a Servidor un Mensaje Emisor Preparado. Entonces OyenteCliente avisa al Cliente 1 con un Mensaje Preparar Recepción.
+
+	Una vez se conecten, Cliente 1 envía un Mensaje Descargar Archivo (como mensaje de conexión) a Cliente 2. Este lo recibe y le envía un Mensaje Enviar Archivo con la información del fichero solicitado. Una vez descargado, Cliente 1 envía un Mensaje de Desconexión y Cliente 2 lo Confirma.
+
+3. Desconectarse del Servidor:
+	Cliente envía un Mensaje de Desconexión, luego el Servidor le contesta con un Mensaje de Confirmación de Desconexión.
+
+
+
+
+Anexo:
+Para implementar Productor Consumidor, hemos hecho lo siguiente en Servidor:
+Hemos establecido un Máximo de Usuarios que pueden estar conectados y para ello hemos creado un Almacen de tickets (array de tamaño MAX_USERS) que al principio está lleno donde en cada posición tiene un número. Cuando un Cliente envía un mensaje de Conexión, el OyenteCliente correspondiente intenta coger un ticket del Almacén (Consumir) cuyo número será su identificador para los locks.
+Luego cuando Cliente envía un mensaje de desconexión, deja su ticket en la primera posición libre del Almacén (Producir).
+
+Con las descargas y envíos de archivos hemos hecho algo parecido
