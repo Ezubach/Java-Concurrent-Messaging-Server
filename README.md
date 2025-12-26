@@ -85,6 +85,22 @@ A key feature of this implementation is the usage of **Atomic Operations** (Comp
 
 ---
 
+## 📚 Detailed Documentation
+
+For an **in-depth explanation** of how the concurrency mechanisms work and what benefits they provide, see:
+
+### [**CONCURRENCY_GUIDE.md**](CONCURRENCY_GUIDE.md)
+
+This comprehensive guide covers:
+- 🏗️ **Complete system architecture** with thread interaction diagrams
+- 🔐 **Every concurrency mechanism** explained in detail (Locks, Monitors, Semaphores)
+- 🚀 **How each component helps with concurrency** (throughput, fairness, safety)
+- 📊 **Real-world scenarios** showing multiple threads in action
+- ⚠️ **Race condition prevention** and thread safety analysis
+- 💡 **Code examples** demonstrating each pattern
+
+---
+
 ## Conclusions
 
 The development of this Concurrent Chat Server demonstrates the trade-offs between implementing custom synchronization algorithms versus using standard libraries. While algorithms like **Bakery** or **Butterfly Barriers** offer deep control and theoretical fairness, Java's **Monitors (`synchronized`)** provide a safer and less error-prone development experience.
