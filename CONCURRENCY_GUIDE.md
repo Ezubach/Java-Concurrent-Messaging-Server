@@ -98,9 +98,11 @@ while(turn != next) {
 turn.get(i).asignar(getMax() + 1);  // Get next ticket number
 
 // Wait for all threads with smaller (number, id) tuples
+// Uses lexicographic ordering: (a,b) > (c,d) if a>c OR (a==c AND b>d)
 for(int j = 1; j <= _n; j++) {
     if(j != i) {
-        while((turn[i], i) > (turn[j], j) && turn[j] != 0) {
+        while((new Tupla(turn.get(i).getValor(),i)).mayor(new Tupla(turn.get(j).getValor(),j)) 
+              && turn.get(j).getValor() != 0) {
             Thread.yield();
         }
     }
@@ -143,7 +145,7 @@ for(int j = 1; j <= _n; j++) {
 - ❌ **Complex**: Harder to understand than other algorithms
 - ❌ **Busy-waiting**: CPU intensive
 
-**Used in:** Client `lockRompEmpate` for console output coordination (up to MAX_DESCARGAS_SIMUL + MAX_ENVIOS_SIMUL + 2 threads)
+**Used in:** Client `lockRompeEmpate` for console output coordination (up to MAX_DESCARGAS_SIMUL + MAX_ENVIOS_SIMUL + 2 threads)
 
 ### 2. Monitor Patterns (High-Level)
 
@@ -363,11 +365,11 @@ private volatile int nr = 0;
 
 ### 1. **Throughput**
 
-| Without Concurrency | With Concurrency |
-|-------------------|-----------------|
-| 1 client at a time | Up to MAX_USERS simultaneously |
+| Without Concurrency        | With Concurrency                  |
+|----------------------------|-----------------------------------|
+| 1 client at a time         | Up to MAX_USERS simultaneously    |
 | Blocked during file transfer | P2P transfers don't block server |
-| Sequential request processing | Parallel request handling |
+| Sequential request processing | Parallel request handling       |
 
 ### 2. **Responsiveness**
 
